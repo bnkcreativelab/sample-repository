@@ -6,6 +6,48 @@ The CoreTSN IP supports configurable traffic classes, gate control lists, and ti
 
 This application note demonstrates how these capabilities can be evaluated and integrated using the PolarFire® SoC platform.
 
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Table of Contents](#table-of-contents)
+- [Demo Design](#demo-design)
+- [Demo Requirements](#demo-requirements)
+- [Demo Prerequisite](#demo-prerequisite)
+- [Demo Setup](#demo-setup)
+  - [Jumper Settings and Board Setup](#jumper-settings-and-board-setup)
+  - [Software Setup](#software-setup)
+  - [Instructions to Run the Demo on Linux](#instructions-to-run-the-demo-on-linux)
+    - [Demo at a glance](#demo-at-a-glance)
+- [Design Resource Utilization](#design-resource-utilization)
+- [Design Description](#design-description)
+  - [Design Control Flow](#design-control-flow)
+  - [Hardware Implementation](#hardware-implementation)
+    - [Clock and Reset Module](#clock-and-reset-module)
+    - [APB Module](#apb-module)
+    - [Processor Subsystem](#processor-subsystem)
+    - [TSN Peripheral Module](#tsn-peripheral-module)
+      - [COREAXI4PROTOCONV](#coreaxi4protoconv)
+      - [CoreAXI4InterConnec](#coreaxi4interconnec)
+      - [PCKT\_GENERATOR\_CHECKER](#pckt_generator_checker)
+      - [NAT\_STR\_CONV](#nat_str_conv)
+      - [CoreAXI4SInterconnect](#coreaxi4sinterconnect)
+      - [CoreTSN](#coretsn)
+      - [Core1588](#core1588)
+      - [CoreSGMII](#coresgmii)
+      - [PF\_TX\_PLL](#pf_tx_pll)
+      - [PF\_IOD\_CDR](#pf_iod_cdr)
+    - [Clocking and Reset Structure](#clocking-and-reset-structure)
+    - [Design Memory Map](#design-memory-map)
+  - [Software Implementation](#software-implementation)
+- [Programming the Device Using FlashPro Express](#programming-the-device-using-flashpro-express)
+- [Appendix A: TSN Demo for Windows Support](#appendix-a-tsn-demo-for-windows-support)
+- [Appendix B: Linux® Host Setup for Serial Communication](#appendix-b-linux-host-setup-for-serial-communication)
+- [Appendix C: Verifying PTP Hardware Clock (PHC) Support](#appendix-c-verifying-ptp-hardware-clock-phc-support)
+- [Appendix D: Design Creation Using TCL Scripts](#appendix-d-design-creation-using-tcl-scripts)
+- [Glossary](#glossary)
+
+
 ## Demo Design
 
 The demo design integrates the functionality of the TSN IP on a PolarFire® SoC Video kit. The TAS (Qbv) feature of TSN is demonstrated in this demo by controlling the stepper motor and the counter.
@@ -16,10 +58,12 @@ The following block diagram illustrates the block-level view of the current demo
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 1-1.** TSN IP Demo</p>
+<p><b>Figure 1-1</b> TSN IP Demo</p>
 </div>
 
 ## Demo Requirements
+
+<!-- prettier-ignore-start -->
 
 | Requirement                  | Description                                                                                                                                                                                                                                         |
 | :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,7 +82,7 @@ The following block diagram illustrates the block-level view of the current demo
 | **Job File**                 | `TSN_Demo_GUI_Video_Kit.job`                                                                                                                                                                                                                        |
 | **CoreTSN**                  | Licensed IP. For license details, see the CoreTSN User Guide.                                                                                                                                                                                       |
 
-
+<!-- prettier-ignore-start -->
 
 ## Demo Prerequisite
 
@@ -54,7 +98,7 @@ The following figure shows the board setup.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-1.** Board Setup showing Jumper Settings</p>
+<p><b>Figure 4-1</b> Board Setup showing Jumper Settings</p>
 </div>
 
 To setup the Video Kit board, perform the following steps:
@@ -63,7 +107,7 @@ To setup the Video Kit board, perform the following steps:
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-2. Lead Wire Configuration**</p>
+<p><b>Figure 4-2. Lead Wire Configuration**</p>
 </div>
 
 1. Make sure to connect the 12V DC power adapter to the Click board (for more information, [see
@@ -90,7 +134,7 @@ To configure the network communication between Ubuntu and Video Kit, perform the
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-3.** Configuring VLAN on the Demo Kit</p>
+<p><b>Figure 4-3</b> Configuring VLAN on the Demo Kit</p>
 </div>
 
 2. On Ubuntu Machine: Log in to the Ubuntu machine and execute the following commands to
@@ -103,31 +147,33 @@ sudo ip link set dev eno1.13 up
 sudo ip addr add 192.168.13.20/24 dev eno1.13
 sudo ifconfig eno1.13 mtu 1400
 ```
+<br />
 
-:::danger Important
-If the network device is not named eno1, update the commands accordingly.
-:::
+> [!IMPORTANT]
+> If the network device is not named eno1, update the commands accordingly.
 
-3. Once the network is configured, test connectivity to the TSN demo kit to by running ping
+
+1. Once the network is configured, test connectivity to the TSN demo kit to by running ping
 192.168.13.2 from the Ubuntu machine. Receiving replies confirms that the communication
 path is working.
 
-4. Then, on the demo kit, run ping 192.168.13.20 to test connectivity to the Ubuntu machine. If both ping tests succeed, the VLAN-based communication path is confirmed to be established.
+2. Then, on the demo kit, run ping 192.168.13.20 to test connectivity to the Ubuntu machine. If both ping tests succeed, the VLAN-based communication path is confirmed to be established.
 
-5. For a PTP connection to function between an Ubuntu machine (acting as the initiator) and a PolarFire SoC device (acting as the target), ptp4l must be configured on both devices. Perform the following recommended instructions on Ubuntu machine:
-<ol type="a">
-    <li>Verify that the Ubuntu system's Network Interface Card (NIC) supports Generalized Precision Time Protocol (gPTP). For more information, see [Appendix C: Verifying PTP Hardware Clock (PHC) Support](Verify that the Ubuntu system's Network Interface Card (NIC) supports Generalized Precision Time Protocol (gPTP). For more information, see Appendix C: Verifying PTP Hardware Clock (PHC) Support)</li>
-    <li>Install the LinuxPTP package with `sudo apt-get install linuxptp` command</li>
-    <li>Download the [gPTP.cfg](https://github.com/richardcochran/linuxptp/blob/master/configs/gPTP.cfg) and change the **neighborPropDelayThresh** value from 800 to
-150000, to ensure it aligns with the NIC configuration.</li>
-    <li>Run the ptp4l initiator with `sudo ptp4l -i <eth interface> -m -f <path to gPTP.cfg> command`</li>
-</ol>
+3. For a PTP connection to function between an Ubuntu machine (acting as the initiator) and a PolarFire SoC device (acting as the target), ptp4l must be configured on both devices. Perform the following recommended instructions on Ubuntu machine:
+    <ol type="a">
+        <li>Verify that the Ubuntu system's Network Interface Card (NIC) supports Generalized Precision Time Protocol (gPTP). For more information, see [Appendix C: Verifying PTP Hardware Clock (PHC) Support](Verify that the Ubuntu system's Network Interface Card (NIC) supports Generalized Precision Time Protocol (gPTP). For more information, see Appendix C: Verifying PTP Hardware Clock (PHC) Support)</li>
+        <li>Install the LinuxPTP package with `sudo apt-get install linuxptp` command</li>
+        <li>Download the [gPTP.cfg](https://github.com/richardcochran/linuxptp/blob/master/configs/gPTP.cfg) and change the **neighborPropDelayThresh** value from 800 to
+    150000, to ensure it aligns with the NIC configuration.</li>
+        <li>Run the ptp4l initiator with `sudo ptp4l -i <eth interface> -m -f <path to gPTP.cfg> command`</li>
+    </ol>
 
-**Note:** ptp4l starts on the target (PolarFire SoC device) with the execution of the `tsninit.sh` script in Step 4.
 
-:::danger Important
-For Windows® support, see the [Appendix A: TSN Demo for Windows Support](#appendix-a-tsn-demo-for-windows-support).
-:::
+> [!NOTE]
+>  ptp4l starts on the target (PolarFire SoC device) with the execution of the `tsninit.sh` script in Step 4.
+
+> [!IMPORTANT]
+> For Windows® support, see the [Appendix A: TSN Demo for Windows Support](#appendix-a-tsn-demo-for-windows-support).
 
 #### Demo at a glance
 
@@ -137,7 +183,7 @@ To setup and run the demo, perform the following steps
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-4.** PolarFire® SoC TSN Demo Page</p>
+<p><b>Figure 4-4</b> PolarFire® SoC TSN Demo Page</p>
 </div>
 
 2. Clicking the **Counter** icon initiates a countdown timer on the demo kit, decrementing by one unit every second. While active, the web browser updates the displayed counter value in real-time by retrieving the latest value from the demo kit every second, providing a live view on the web page.
@@ -146,26 +192,25 @@ To setup and run the demo, perform the following steps
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-5.** Starting and Stopping the Stepper Motor</p>
+<p><b>Figure 4-5.</b> Starting and Stopping the Stepper Motor</p>
 </div>
 5. When the **Flood Traffic** icon is pressed, it starts the flood traffic at a very high rate. This traffic is pre-configured to run for 15 seconds and stops automatically. It cannot be stopped manually.
 
-:::danger Important
-Ensure to run this setup on an isolated network to avoid interference with other systems. TSN is designed to handle and prioritize specific traffic patterns that might not align with standard network configurations.
-:::
+> [!IMPORTANT]
+> Ensure to run this setup on an isolated network to avoid interference with other systems. TSN is designed to handle and prioritize specific traffic patterns that might not align with standard network configurations.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-6.** Initiating Flood Traffic</p>
+<p><b>Figure 4-6</b> Initiating Flood Traffic</p>
 </div>
 
-6. To configure the demo kit with the default TSN profile, click the TSN icon. When TSN is enabled, a specific portion of the network bandwidth is reserved for motor control commands and counter data updates, ensuring deterministic and time-critical communication. This is managed using the Time-Aware Shaper (TAS), which divides the communication cycle into specific time slots and schedules critical messages to be sent exclusively during these windows. TAS temporarily restricts lower-priority traffic, ensuring that essential messages are delivered on time and without interference, maintaining real-time synchronization for motor controls and counter updates.
+1. To configure the demo kit with the default TSN profile, click the TSN icon. When TSN is enabled, a specific portion of the network bandwidth is reserved for motor control commands and counter data updates, ensuring deterministic and time-critical communication. This is managed using the Time-Aware Shaper (TAS), which divides the communication cycle into specific time slots and schedules critical messages to be sent exclusively during these windows. TAS temporarily restricts lower-priority traffic, ensuring that essential messages are delivered on time and without interference, maintaining real-time synchronization for motor controls and counter updates.
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 4-7.** Configuring the Demo Kit with the Default TSN Profile</p>
+<p><b>Figure 4-7</b> Configuring the Demo Kit with the Default TSN Profile</p>
 </div>
 
-7. Deactivating the **TSN** icon removes the TSN profile from the demo kit, enabling dynamic switching between TSN-enabled and standard network modes for flexible configuration and testing.
+1. Deactivating the **TSN** icon removes the TSN profile from the demo kit, enabling dynamic switching between TSN-enabled and standard network modes for flexible configuration and testing.
 
 The demo uses a Click board to control the stepper motor, interfacing with the FPGA over SPI. The SPI driver exposes control signals from the Click board, allowing the motor to be operated by sending data over SPI. Similarly, if other interfaces such as I2C are needed, ensure the appropriate drivers are available and can communicate with the FPGA to control the target device.
 
@@ -175,7 +220,7 @@ The demo uses a Click board to control the stepper motor, interfacing with the F
 The following table lists the resource utilization of the TSN demo on PolarFire® SoC MPFS250TS. These values might vary slightly for different Libero® runs, settings and seed values.
 
 <div>
-  <p align="center">**Table 5-1.** Resource Utilization</p>
+  <p align="center"><b>Table 5-1</b> Resource Utilization</p>
 
   | Module Name                | 4LUT (Fabric & Interface) | DFF (Fabric & Interface) | µSRAM (64x12) | LSRAM (20K) |
   | -------------------------- | :-----------------------: | :----------------------: | :-----------: | :---------: |
@@ -245,7 +290,7 @@ The following figure shows the SmartDesign of the clock and reset module.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-1.** SmartDesign of the Clock and Reset Module</p>
+<p><b>Figure 6-1</b> SmartDesign of the Clock and Reset Module</p>
 </div>
 
 #### APB Module
@@ -254,7 +299,7 @@ The following figure shows the SmartDesign of the APB module.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-2.** SmartDesign of the APB Module</p>
+<p><b>Figure 6-2</b> SmartDesign of the APB Module</p>
 </div>
 
 This SmartDesign includes an APB Interconnect module that links the APB Initiator interface from the processor subsystem module to various APB Targets in the demo design. The target devices in the design with APB control interface are connected as through this interconnect. The MSS accesses
@@ -266,7 +311,7 @@ The following figure shows the SmartDesign of processor subsystem module.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-3.** SmartDesign of Processor Subsystem Module</p>
+<p><b>Figure 6-3</b> SmartDesign of Processor Subsystem Module</p>
 </div>
 
 The PolarFire® SoC MSS Configurator provides a GUI that allows embedded software engineers
@@ -283,12 +328,12 @@ The following figure shows the SmartDesign of TSN peripheral module.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**FFigure 6-4.** SmartDesign of TSN Peripheral Module</p>
+<p><b>FFigure 6-4</b> SmartDesign of TSN Peripheral Module</p>
 </div>
 
 This SmartDesign shows the interconnection of the CoreTSN IP to the system-side and the line- side. The system-side interface is connected to the AXI4 interface, while the line-side interface is connected to the onboard PHY module through a serial data interface operating at 1 Gbps.
 
-##### **COREAXI4PROTOCONV**
+##### COREAXI4PROTOCONV
 
 This design includes two instances of the COREAXI4PROTOCONV IP: MM2S on the transmit side and S2MM on the receive side. The MSS transmits and receives data from the fabric modules as a memory mapped device. The TSN IP accepts and outputs data in AXI stream format which has to be read/written to the memory as per the descriptors configured by the MSS. This functionality is attained by the S2MM and M2SS Logic.
 
@@ -358,7 +403,7 @@ The following diagram shows the clocking structure of the TSN demo.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-5.** Clocking Structure</p>
+<p><b>Figure 6-5</b> Clocking Structure</p>
 </div>
 
 There are two resets used in the design. One is ARESETN_125 MHz, which resets the logic operating at a 125 MHz clock. The other is ARESETN_50 MHz, which resets the logic with the APB clock (50 MHz). The IOD_CDR_CCC PLL_Lock is used to reset the IOD_CDR block.
@@ -367,7 +412,7 @@ The following block diagram shows the reset structure of the TSN demo.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-6.** Reset Structure</p>
+<p><b>Figure 6-6</b> Reset Structure</p>
 </div>
 
 #### Design Memory Map
@@ -376,12 +421,12 @@ The following figures show the memory map of the TSN demo design.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-7.** Memory Map of FIC_0_PERIPEHERALS</p>
+<p><b>Figure 6-7</b> Memory Map of FIC_0_PERIPEHERALS</p>
 </div>
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-8.** Memory Map of FIC_CONVERTER</p>
+<p><b>Figure 6-8</b> Memory Map of FIC_CONVERTER</p>
 </div>
 
 ### Software Implementation
@@ -390,7 +435,7 @@ The following figure shows the software implementation.
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 6-9.** Software Implementation</p>
+<p><b>Figure 6-9</b> Software Implementation</p>
 </div>
 
 
@@ -427,7 +472,7 @@ Please note down all the interfaces listed. Ethernet and Ethernet 4 are listed, 
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 8-1.** IP Config Command</p>
+<p><b>Figure 8-1</b> IP Config Command</p>
 </div>
 
 2. Now connect the USB Ethernet Adapter into the laptop/desktop without having ethernet cable connected to the adapter.
@@ -435,7 +480,7 @@ Please note down all the interfaces listed. Ethernet and Ethernet 4 are listed, 
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 8-2.** Verifying Ethernet Interface Name and IP Configuration</p>
+<p><b>Figure 8-2</b> Verifying Ethernet Interface Name and IP Configuration</p>
 </div>
 
 4. Insert the network cable into the USB.
@@ -444,38 +489,41 @@ the figure
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p>**Figure 8-3.** Automatic IP Assignment through DHCP on Adaptern</p>
+<p><b>Figure 8-3</b> Automatic IP Assignment through DHCP on Adaptern</p>
 </div>
 
 6. To create VLAN/PCP, run the listed commands in PowerShell which configures the Ethernet 5, for PCP 5 and VLAN ID 13.
 
 <div>
-  <p align="center">**Table 5-1.** Resource Utilization</p>
-  | **Task**                  | **Command**                                                                                                                    | **Remarks**                                                                                                                                          |
-  | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Check Advance Properties  | ```powershell<br>Get-NetAdapterAdvancedProperty -Name "Ethernet 5"<br>```                                                      | —                                                                                                                                                    |
-  | Enable VLAN/PCP Tagging   | ```powershell<br>Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "*PriorityVLANTag" -RegistryValue 3<br>``` | Enables 802.1Q VLAN tagging and prioritization by setting the registry flag for VLAN/PCP tagging to 3.                                               |
-  | Set VLAN ID 13            | ```powershell<br>Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "RegVlanID" -RegistryValue 13<br>```       | Assigns VLAN ID 13 to the Ethernet interface, marking traffic from this interface with the specified VLAN tag.                                       |
-  | Assign PCP                | ```powershell<br>New-NetQosPolicy -Name "VLAN_Priority5" -AppPathNameMatchCondition "*" -PriorityValue8021Action 5<br>```      | Creates a QoS policy to tag all outbound packets (`AppPathNameMatchCondition "*"`) with a PCP value of 5, indicating a medium-high traffic priority. |
-  | Assign IP Address to VLAN | ```powershell<br>New-NetIPAddress -InterfaceAlias "Ethernet 5" -IPAddress "192.168.13.13" -PrefixLength 24<br>```              | Sets a static IP address (`192.168.13.13/24`) on the interface after enabling VLAN tagging.                                                          |
-  | Set MTU to 1400           | ```powershell<br>netsh interface ipv4 set subinterface interface="Ethernet 5" mtu=1400 store=persistent<br>```                 | Reduces MTU to 1400 bytes to accommodate VLAN headers (adds 4 bytes), preventing fragmentation in VLAN-tagged packets.                               |
+  <p align="center"><b>Table 5-1</b> Resource Utilization</p>
+
+| **Task**                  | **Command**                                                                                              | **Remarks**                                                                                                    |
+| ------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| Check Advance Properties  | `Get-NetAdapterAdvancedProperty -Name "Ethernet 5"`                                                      | —                                                                                                              |
+| Enable VLAN/PCP Tagging   | `Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "*PriorityVLANTag" -RegistryValue 3` | Enables 802.1Q VLAN tagging and prioritization by setting the registry flag for VLAN/PCP tagging to 3.         |
+| Set VLAN ID 13            | `Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "RegVlanID" -RegistryValue 13`       | Assigns VLAN ID 13 to the Ethernet interface, marking traffic from this interface with the specified VLAN tag. |
+| Assign PCP                | `New-NetQosPolicy -Name "VLAN_Priority5" -AppPathNameMatchCondition "*" -PriorityValue8021Action 5`      | Creates a QoS policy to tag outbound packets (`AppPathNameMatchCondition "*"`) with a PCP value of 5.          |
+| Assign IP Address to VLAN | `New-NetIPAddress -InterfaceAlias "Ethernet 5" -IPAddress "192.168.13.13" -PrefixLength 24`              | Sets a static IP address (`192.168.13.13/24`) on the interface.                                                |
+| Set MTU to 1400           | `netsh interface ipv4 set subinterface interface="Ethernet 5" mtu=1400 store=persistent`                 | Reduces MTU to 1400 bytes to accommodate VLAN headers.                                                         |
 
 </div>
 
-    - To check advance properties, run the following command:
+  - To check advance properties, run the following command:
     
 
 ```console
 Get-NetAdapterAdvancedProperty -Name "Ethernet 5"
 ```
+
 **Priority & VLAN** status is **Disabled**, with registered value as "0", as shown in the following figure.
 
 <div align="center">
     <img src="./images/placeholder.svg" width="50%" />
-    <p>**Figure 8-4.** Checking Priority & VLAN Status on Ethernet 5 Adapter (Disabled)</p>
+    <p><b>Figure 8-4</b> Checking Priority & VLAN Status on Ethernet 5 Adapter (Disabled)</p>
 </div>
 
-    - To enable VLAN/PCP tagging, run the following command:
+- To enable VLAN/PCP tagging, run the following command:
+  
     ```console
     Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "*PriorityVLANTag" -RegistryValue 3
     ```
@@ -485,10 +533,11 @@ following figure.
 
 <div align="center">
     <img src="./images/placeholder.svg" width="50%" />
-    <p>**Figure 8-5.** Enabling Priority & VLAN on Ethernet 5 Adapter</p>
+    <p><b>Figure 8-5</b> Enabling Priority & VLAN on Ethernet 5 Adapter</p>
 </div>
 
-    - To set VLAN ID 13, run the following command:
+  - To set VLAN ID 13, run the following command:
+  
     ```console
     Set-NetAdapterAdvancedProperty -Name "Ethernet 5" -RegistryKeyword "RegVlanID" -RegistryValue 13
     ```
@@ -496,44 +545,59 @@ following figure.
 
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-6.** Change VLAN ID to 13 on Ethernet 5</p>
+        <p><b>Figure 8-6</b> Change VLAN ID to 13 on Ethernet 5</p>
     </div>
-    - To assign PCP, run the following command as shown in the following figure.
+
+  - To assign PCP, run the following command as shown in the following figure.
+    
     ```console
     New-NetQosPolicy -Name "VLAN_Priority5" -AppPathNameMatchCondition "*" -PriorityValue8021Action 5
     ```
+    
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-7.** Creating QoS Policy with VLAN Priority 5</p>
+        <p><b>Figure 8-7</b> Creating QoS Policy with VLAN Priority 5</p>
     </div>
-    **Note:** Priority Value has been set to "5".
+
+    > [!NOTE]
+    > Priority Value has been set to "5".
+
     - To assign IP address to VLAN, run the following command as shown in the following figure.
     ```console
     New-NetIPAddress -InterfaceAlias "Ethernet 5" -IPAddress "192.168.13.13" -PrefixLength 24
     ```
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-8.** Assigning Static IP to Ethernet 5 Interface</p>
+        <p><b>Figure 8-8</b> Assigning Static IP to Ethernet 5 Interface</p>
     </div>
-    **Note:** Address has been set to "Ethernet 5".
+
+    > [!NOTE]
+    > Address has been set to "Ethernet 5".
+
     - To set MTU to 1400, run the following command as shown in the following figure.
     ```console
     netsh interface ipv4 set subinterface interface="Ethernet 5" mtu=1400 store=persistent
     ```
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-9.** Setting MTU on Ethernet 5 Interface</p>
+        <p><b>Figure 8-9</b> Setting MTU on Ethernet 5 Interface</p>
     </div>
-    **Note:** Check the MTU for Ethernet 5 has been updated to 1400.
+
+    > [!NOTE]
+    > Check the MTU for Ethernet 5 has been updated to 1400.
+    
     - Run the `ipconfig` again and verify if the address `192.168.13.13` has been assigned to the "Ethernet 5" adaptor, as shown in the following figure.
+    - 
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-10.** Verifying IP Assignment on Ethernet 5 Adapter</p>
+        <p><b>Figure 8-10</b> Verifying IP Assignment on Ethernet 5 Adapter</p>
     </div>
+
     - To verify the connection to the PolarFire® SoC Video Kit, execute the command `ping 192.168.13.2`. Ensure that you receive a reply from the video kit, as shown in the following figure.
+    - 
     <div align="center">
         <img src="./images/placeholder.svg" width="50%" />
-        <p>**Figure 8-11.** Ping Command to Verify Connection with PolarFire SoC Video Kit</p>
+        <p><b>Figure 8-11</b> Ping Command to Verify Connection with PolarFire SoC Video Kit</p>
     </div>
     This confirms that communication between the Video Kit and the Windows machine is established and operational and to proceed further, see the [Demo at a Glance](#demo-at-a-glance) section.
 
@@ -609,7 +673,7 @@ After successful execution of TCL script, Libero project is created within `pola
 Following are the list of terms and definitions used in the document.
 
 <div>
-  <p align="center">**Table 12-1.** Terms and Definitions</p>
+  <p align="center"><b>Table 12-1</b> Terms and Definitions</p>
   
 |  **Term** | **Definition**                             |
 | --------: | ------------------------------------------ |
