@@ -63,7 +63,6 @@ The following block diagram illustrates the block-level view of the current demo
 
 ## Demo Requirements
 
-<!-- prettier-ignore-start -->
 
 | Requirement                  | Description                                                                                                                                                                                                                                         |
 | :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -107,7 +106,7 @@ To setup the Video Kit board, perform the following steps:
 
 <div align="center">
 <img src="./images/placeholder.svg" width="50%" />
-<p><b>Figure 4-2. Lead Wire Configuration**</p>
+<p><b>Figure 4-2.</b> Lead Wire Configuration</p>
 </div>
 
 1. Make sure to connect the 12V DC power adapter to the Click board (for more information, [see
