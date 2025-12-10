@@ -17,22 +17,22 @@ This application note demonstrates how these capabilities can be evaluated and i
 - [Demo Requirements](#demo-requirements)
 - [Demo Prerequisite](#demo-prerequisite)
 - [Demo Setup](#demo-setup)
-  - [Jumper Settings and Board Setup](#jumper-settings-and-board-setup)
+  - [Board Setup](#jumper-settings-and-board-setup)
   - [Software Setup](#software-setup)
-  - [Instructions to Run the Demo on Linux](#instructions-to-run-the-demo-on-linux)
+  - [Instructions to Run the Demo](#instructions-to-run-the-demo-on-linux)
     - [Demo at a glance](#demo-at-a-glance)
 - [Design Resource Utilization](#design-resource-utilization)
 - [Design Description](#design-description)
   - [Design Control Flow](#design-control-flow)
   - [Hardware Implementation](#hardware-implementation)
   - [Software Implementation](#software-implementation)
-- [Programming the Device Using FlashPro Express](#programming-the-device-using-flashpro-express)
-- [Appendix A: TSN Demo for Windows Support](#appendix-a-tsn-demo-for-windows-support)
+- [Appendix A: Programming the Device Using FlashPro Express](#programming-the-device-using-flashpro-express)
 - [Appendix B: Linux® Host Setup for Serial Communication](#appendix-b-linux-host-setup-for-serial-communication)
-- [Appendix C: Verifying PTP Hardware Clock (PHC) Support](#appendix-c-verifying-ptp-hardware-clock-phc-support)
-- [Appendix D: Design Creation Using TCL Scripts](#appendix-d-design-creation-using-tcl-scripts)
+- [Appendix C: Design Creation Using TCL Scripts](#appendix-d-design-creation-using-tcl-scripts)
+- [Additional Instructions]
+  - [Item 1 ](#appendix-a-tsn-demo-for-windows-support)
+  - [Item 2  ](#appendix-c-verifying-ptp-hardware-clock-phc-support)
 - [Glossary](#glossary)
-
 
 
 ## Support
