@@ -11,6 +11,8 @@ This application note demonstrates how these capabilities can be evaluated and i
 
 - [Introduction](#introduction)
 - [Table of Contents](#table-of-contents)
+- [Support](#support)
+- [Interoperability](#interoperability)
 - [Demo Design](#demo-design)
 - [Demo Requirements](#demo-requirements)
 - [Demo Prerequisite](#demo-prerequisite)
