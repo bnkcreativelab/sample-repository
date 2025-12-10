@@ -34,6 +34,11 @@ This application note demonstrates how these capabilities can be evaluated and i
 - [Glossary](#glossary)
 
 
+
+## Support
+
+## Interoperability
+
 ## Demo Design
 
 The demo design integrates the functionality of the TSN IP on a PolarFire® SoC Video kit. The TAS (Qbv) feature of TSN is demonstrated in this demo by controlling the stepper motor and the counter.
@@ -65,12 +70,7 @@ The following block diagram illustrates the block-level view of the current demo
 | **7-Zip**                    | Tool needed for extracting `.wic` file from `.wic.gz` compressed file.                                                                                                                                                                              |
 | **Linux wic Image**          | `TSN_Demo_GUI_Video_Kit_WIC-Image.wic.gz`                                                                                                                                                                                                           |
 | **Job File**                 | `TSN_Demo_GUI_Video_Kit.job`                                                                                                                                                                                                                        |
-| **CoreTSN**                  | Licensed IP. For license details, see the CoreTSN User Guide.                                                                                                                                                                                       |
-
-## Support
-
-## Interoperability
-
+| **CoreTSN**                  | Licensed IP. For license details, see the CoreTSN User Guide.                                                                                                                                                                                       
 
 ## Demo Prerequisite
 
