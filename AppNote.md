@@ -65,7 +65,10 @@ The following block diagram illustrates the block-level view of the current demo
 | **Job File**                 | `TSN_Demo_GUI_Video_Kit.job`                                                                                                                                                                                                                        |
 | **CoreTSN**                  | Licensed IP. For license details, see the CoreTSN User Guide.                                                                                                                                                                                       |
 
-<!-- prettier-ignore-start -->
+## Support
+
+## Interoperability
+
 
 ## Demo Prerequisite
 
@@ -80,7 +83,7 @@ This section provides detailed information how to setup and run the demo.
 The following figure shows the board setup.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-1</b> Board Setup showing Jumper Settings</p>
 </div>
 
@@ -89,7 +92,7 @@ To setup the Video Kit board, perform the following steps:
 2. Ensure to make the required wire connections from Stepper Motor to the Click board, as shown in the following figure.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-2.</b> Lead Wire Configuration</p>
 </div>
 
@@ -116,7 +119,7 @@ To configure the network communication between Ubuntu and Video Kit, perform the
    </ol>
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-3</b> Configuring VLAN on the Demo Kit</p>
 </div>
 
@@ -165,7 +168,7 @@ To setup and run the demo, perform the following steps
 1. Launch a web browser such as Chrome or Edge and navigate to [http://192.168.13.2/tsn/](http://192.168.13.2/tsn/). This displays the TSN demo kit's web page, as shown in the following figure.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-4</b> PolarFire® SoC TSN Demo Page</p>
 </div>
 
@@ -174,7 +177,7 @@ To setup and run the demo, perform the following steps
 4. Clicking the **Start Stepper Motor** icon initiates continuous operation of the stepper motor, by changing the icon label to **Stop Stepper Motor**. The system then sends commands every second for the motor to complete a full revolution. This process continuous until the **Stop Stepper Motor** icon is pressed, which stops the motor.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-5.</b> Starting and Stopping the Stepper Motor</p>
 </div>
 5. When the **Flood Traffic** icon is pressed, it starts the flood traffic at a very high rate. This traffic is pre-configured to run for 15 seconds and stops automatically. It cannot be stopped manually.
@@ -183,13 +186,13 @@ To setup and run the demo, perform the following steps
 > Ensure to run this setup on an isolated network to avoid interference with other systems. TSN is designed to handle and prioritize specific traffic patterns that might not align with standard network configurations.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-6</b> Initiating Flood Traffic</p>
 </div>
 
 1. To configure the demo kit with the default TSN profile, click the TSN icon. When TSN is enabled, a specific portion of the network bandwidth is reserved for motor control commands and counter data updates, ensuring deterministic and time-critical communication. This is managed using the Time-Aware Shaper (TAS), which divides the communication cycle into specific time slots and schedules critical messages to be sent exclusively during these windows. TAS temporarily restricts lower-priority traffic, ensuring that essential messages are delivered on time and without interference, maintaining real-time synchronization for motor controls and counter updates.
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 4-7</b> Configuring the Demo Kit with the Default TSN Profile</p>
 </div>
 
@@ -272,7 +275,7 @@ The AXI_CLK is used as the system side clock in the design and the APB logic of 
 The following figure shows the SmartDesign of the clock and reset module.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-1</b> SmartDesign of the Clock and Reset Module</p>
 </div>
 
@@ -281,7 +284,7 @@ The following figure shows the SmartDesign of the clock and reset module.
 The following figure shows the SmartDesign of the APB module.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-2</b> SmartDesign of the APB Module</p>
 </div>
 
@@ -293,7 +296,7 @@ the internal registers and control status of the various targets through this in
 The following figure shows the SmartDesign of processor subsystem module.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-3</b> SmartDesign of Processor Subsystem Module</p>
 </div>
 
@@ -310,7 +313,7 @@ connects to the fabric modules through the FIC interfaces ( FIC_0_AXI4_intiator)
 The following figure shows the SmartDesign of TSN peripheral module.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>FFigure 6-4</b> SmartDesign of TSN Peripheral Module</p>
 </div>
 
@@ -385,7 +388,7 @@ The following are the three clock domains in the demo design:
 The following diagram shows the clocking structure of the TSN demo.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-5</b> Clocking Structure</p>
 </div>
 
@@ -394,7 +397,7 @@ There are two resets used in the design. One is ARESETN_125 MHz, which resets th
 The following block diagram shows the reset structure of the TSN demo.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-6</b> Reset Structure</p>
 </div>
 
@@ -403,12 +406,12 @@ The following block diagram shows the reset structure of the TSN demo.
 The following figures show the memory map of the TSN demo design.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-7</b> Memory Map of FIC_0_PERIPEHERALS</p>
 </div>
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-8</b> Memory Map of FIC_CONVERTER</p>
 </div>
 
@@ -417,7 +420,7 @@ The following figures show the memory map of the TSN demo design.
 The following figure shows the software implementation.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 6-9</b> Software Implementation</p>
 </div>
 
@@ -454,7 +457,7 @@ To configure VLAN ID 13 and to set Priority Code Point (PCP) to 5 on the Etherne
 Please note down all the interfaces listed. Ethernet and Ethernet 4 are listed, as shown in the following figure
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 8-1</b> IP Config Command</p>
 </div>
 
@@ -462,7 +465,7 @@ Please note down all the interfaces listed. Ethernet and Ethernet 4 are listed, 
 3. Check the interfaces again by running ipconfig command. The new Ethernet port gets listed as "Ethernet 5", could be a different name in your case. Since the network is not connected yet, Media disconnected will be listed as shown in the following figure.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 8-2</b> Verifying Ethernet Interface Name and IP Configuration</p>
 </div>
 
@@ -471,7 +474,7 @@ Please note down all the interfaces listed. Ethernet and Ethernet 4 are listed, 
 the figure
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 8-3</b> Automatic IP Assignment through DHCP on Adaptern</p>
 </div>
 
@@ -501,7 +504,7 @@ Get-NetAdapterAdvancedProperty -Name "Ethernet 5"
 **Priority & VLAN** status is **Disabled**, with registered value as "0", as shown in the following figure.
 
 <div align="center">
-    <img src="./images/placeholder.svg" width="50%" />
+    <img src="./images/chipset.png" width="50%" />
     <p><b>Figure 8-4</b> Checking Priority & VLAN Status on Ethernet 5 Adapter (Disabled)</p>
 </div>
 
@@ -515,7 +518,7 @@ Get-NetAdapterAdvancedProperty -Name "Ethernet 5"
 following figure.
 
 <div align="center">
-    <img src="./images/placeholder.svg" width="50%" />
+    <img src="./images/chipset.png" width="50%" />
     <p><b>Figure 8-5</b> Enabling Priority & VLAN on Ethernet 5 Adapter</p>
 </div>
 
@@ -527,7 +530,7 @@ following figure.
     **VLAN ID** is changed to 13,with RegisteryValue as "13", as shown in the following figure.
 
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-6</b> Change VLAN ID to 13 on Ethernet 5</p>
     </div>
 
@@ -538,7 +541,7 @@ following figure.
     ```
     
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-7</b> Creating QoS Policy with VLAN Priority 5</p>
     </div>
 
@@ -550,7 +553,7 @@ following figure.
     New-NetIPAddress -InterfaceAlias "Ethernet 5" -IPAddress "192.168.13.13" -PrefixLength 24
     ```
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-8</b> Assigning Static IP to Ethernet 5 Interface</p>
     </div>
 
@@ -562,7 +565,7 @@ following figure.
     netsh interface ipv4 set subinterface interface="Ethernet 5" mtu=1400 store=persistent
     ```
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-9</b> Setting MTU on Ethernet 5 Interface</p>
     </div>
 
@@ -572,14 +575,14 @@ following figure.
     - Run the `ipconfig` again and verify if the address `192.168.13.13` has been assigned to the "Ethernet 5" adaptor, as shown in the following figure.
     - 
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-10</b> Verifying IP Assignment on Ethernet 5 Adapter</p>
     </div>
 
     - To verify the connection to the PolarFire® SoC Video Kit, execute the command `ping 192.168.13.2`. Ensure that you receive a reply from the video kit, as shown in the following figure.
     - 
     <div align="center">
-        <img src="./images/placeholder.svg" width="50%" />
+        <img src="./images/chipset.png" width="50%" />
         <p><b>Figure 8-11</b> Ping Command to Verify Connection with PolarFire SoC Video Kit</p>
     </div>
     This confirms that communication between the Video Kit and the Windows machine is established and operational and to proceed further, see the [Demo at a Glance](#demo-at-a-glance) section.
