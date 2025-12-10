@@ -41,7 +41,7 @@ The design comprises of the MSS controlling the TSN IP and it schedules the step
 The following block diagram illustrates the block-level view of the current demo.
 
 <div align="center">
-<img src="./images/placeholder.svg" width="50%" />
+<img src="./images/chipset.png" width="50%" />
 <p><b>Figure 1-1</b> TSN IP Demo</p>
 </div>
 
