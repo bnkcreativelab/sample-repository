@@ -488,17 +488,11 @@ The following example shows how to verify PHC support:
 
 Run `ethtool -T eno1 | grep PTP` and look for a line in the output similar to: `PTP Hardware Clock: x` (where x is a numerical value like `0`, `1` or `2`). The presence of this line indicates that NIC has a dedicated PHC, which is essential for gPTP's hardware timestamping and precise synchronization. if the PTP Hardware Clock is present, it confirms that NIC card supports gPTP. For information about PTP connection, see the Step 8 of "Instructions to Run the Demo on Linux" section.
 
-## Appendix D: Design Creation Using TCL Scripts
+## Additional Instructions
 
-TCL scripts are provided in the [GitHub Repository](https://github.com/polarfire-soc/polarfire-soc-video-kit-reference-design). Download the repository `polarfire-soc-video-kit-reference-design` and unzip it into a local directory.
+### Item 1
 
-To run the TCL, perform the following steps:
-
-1. Launch the Libero SoC software.
-2. Click **Project** > **Execute Script...**
-3. Click **Browse** and in the downloaded `polarfire-soc-video-kit-reference-design` directory, select MPFS_VIDEO_KIT_REFERENCE_DESIGN.tcl and pass the argument `TSN SYNTHESIZE PLACEROUTE VERIFY_TIMING HSS_UPDATE SPIFLASH_DATA EXPORT_FPE`.
-4. Click **Run**.
-After successful execution of TCL script, Libero project is created within `polarfire-soc-video-kit-reference-design` directory. For more information about TCL scripts, see [GitHub Repository](https://github.com/polarfire-soc/polarfire-soc-video-kit-reference-design). For more details on TCL commands, see [Libero SoC TCL Command Reference Guide](http://coredocs.s3.amazonaws.com/Libero/2021_3/Tool/libero_soc_tcl_cmd_ref_ug.pdf). Contact [Technical Support](https://www.microchip.com/en-us/support) for any queries encountered when running the TCL script.
+### Item 2
 
 
 ## Glossary
