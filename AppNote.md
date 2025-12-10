@@ -29,7 +29,7 @@ This application note demonstrates how these capabilities can be evaluated and i
 - [Appendix A: Programming the Device Using FlashPro Express](#programming-the-device-using-flashpro-express)
 - [Appendix B: Linux® Host Setup for Serial Communication](#appendix-b-linux-host-setup-for-serial-communication)
 - [Appendix C: Design Creation Using TCL Scripts](#appendix-d-design-creation-using-tcl-scripts)
-- [Additional Instructions]
+- [Additional Instructions](#additional-instructions)
   - [Item 1 ](#appendix-a-tsn-demo-for-windows-support)
   - [Item 2  ](#appendix-c-verifying-ptp-hardware-clock-phc-support)
 - [Glossary](#glossary)
